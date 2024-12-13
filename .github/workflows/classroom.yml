@@ -71,16 +71,10 @@ jobs:
         id: get_commit_hash
         run: echo "COMMIT_HASH=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
 
-      - name: Install ssh keys
-        run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.REMOTE_HOST }} > ~/.ssh/known_hosts
-
       - name: Deploy to remote server
         run: |
-          scp rsoi_lab1.tar ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/tmp
-          ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
+          sshpass -p '${{ secrets.SERVER_PASSWORD }}' scp rsoi_lab1.tar ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/tmp
+          sshpass -p '${{ secrets.SERVER_PASSWORD }}' ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
             docker ps --filter name=rsoi_lab1_* --filter status=running -aq | xargs docker stop | xargs docker rm
             cd /tmp
             docker load < rsoi_lab1.tar
