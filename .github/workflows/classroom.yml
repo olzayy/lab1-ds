@@ -79,6 +79,7 @@ jobs:
 
       - name: Deploy to remote server
         run: |
+          sshpass -p '${{secrets.SERVER_PASSWORD}}' scp lab1/target/lab1-0.0.1-SNAPSHOT.jar ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/tmp
           sshpass -p '${{secrets.SERVER_PASSWORD}}' scp rsoi_lab1.tar ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/tmp
           sshpass -p '${{secrets.SERVER_PASSWORD}}' ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
           docker ps --filter name=rsoi_lab1_* --filter status=running -aq | xargs docker stop | xargs docker rm
