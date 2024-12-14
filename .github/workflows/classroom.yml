@@ -86,6 +86,7 @@ jobs:
           docker load < rsoi_lab1.tar
           cd /app/rsoi_lab1
           docker run -d -p 8080:8080 --name rsoi_lab1_${{ env.COMMIT_HASH }} rsoi_lab1
+          sleep 200
           EOF
 
 
