@@ -6,3 +6,4 @@ ENTRYPOINT ["java","-jar","app.jar"]
 
 # Запустись, пж
 # wtf
+# через postman же доходят запросы
